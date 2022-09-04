@@ -1,6 +1,9 @@
 use super::StatusCode;
-use std::{fmt::{Display, Formatter, Result as FmtResult}, net::TcpStream};
-use std::io::{Write, Result as IOResult};
+use std::io::{Result as IOResult, Write};
+use std::{
+    fmt::{Display, Formatter, Result as FmtResult},
+    net::TcpStream,
+};
 pub struct Response {
     status_code: StatusCode,
     body: Option<String>,
@@ -12,9 +15,9 @@ impl Response {
     }
 
     // write to tcp stream
-    pub fn send(&self, stream: &mut impl Write) -> IOResult<()>{
-        let body = match  &self.body {
-            Some(b) => b ,
+    pub fn send(&self, stream: &mut impl Write) -> IOResult<()> {
+        let body = match &self.body {
+            Some(b) => b,
             None => "",
         };
         write!(
@@ -24,13 +27,10 @@ impl Response {
             self.status_code.reason_phrase(),
             body
         )
-
     }
 }
 
-
-
-// write to formatter 
+// write to formatter
 
 // impl Display for Response {
 //     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {

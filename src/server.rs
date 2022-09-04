@@ -2,12 +2,9 @@ use crate::http::{ParseError, Request, Response, StatusCode};
 use std::{io::Read, net::TcpListener};
 
 pub trait Handler {
-    fn handle_request(&mut self, request: &Request) -> Response{
-            dbg!(request);
-            Response::new(
-                StatusCode::Ok,
-                Some("<h1>Success!</h1>".to_string()),
-            )
+    fn handle_request(&mut self, request: &Request) -> Response {
+        dbg!(request);
+        Response::new(StatusCode::Ok, Some("<h1>Success!</h1>".to_string()))
     }
 
     //default implementation for any one who implements the trait but not the function
@@ -41,9 +38,7 @@ impl Server {
                                 String::from_utf8_lossy(&buffer)
                             );
                             let response = match Request::try_from(&buffer[..]) {
-                                Ok(request) => {
-                                    handler.handle_request(&request)
-                                }
+                                Ok(request) => handler.handle_request(&request),
                                 Err(e) => handler.handle_bad_request(&e),
                             };
 
@@ -65,5 +60,4 @@ impl Server {
     }
 }
 
-
-impl Handler for Server{}
+impl Handler for Server {}
